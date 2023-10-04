@@ -10,11 +10,11 @@
 
 ## Use your personal Native & ERC20 Token Faucet
 
-![image](./faucet.jpeg)
+![image](faucet.jpeg)
 
 ## Use your personal Explorer with built-in Transaction Trace
 
-![image](./explorer.jpeg)
+![image](explorer.jpeg)
 
 # 🏄‍♂️ Quick Start
 
