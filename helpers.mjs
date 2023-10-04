@@ -15,14 +15,14 @@ export function readNodes() {
 
   try {
     nodes = JSON.parse(
-      fs.readFileSync(path.join(__dirname, "./nodes.json")).toString().trim()
+      fs.readFileSync(path.join(__dirname, "./testnet.json")).toString().trim()
     );
   } catch (e) {}
 
   return nodes;
 }
 
-export async function createNewDeployment(node, mnemonic, forkingChainId) {
+export async function createNewDeployment(node, forkingChainId) {
   await getUserDetails();
   await waitForLiveNode(node);
 
@@ -30,14 +30,11 @@ export async function createNewDeployment(node, mnemonic, forkingChainId) {
   node.forkingChainId = forkingChainId;
 
   fs.writeFileSync(
-    path.join(__dirname, "./nodes.json"),
+    path.join(__dirname, "./testnet.json"),
     JSON.stringify(node, null, 2)
   );
 
-  console.log("Node details stored in nodes.json");
-
-  if (mnemonic)
-    fs.writeFileSync(path.join(__dirname, "./mnemonic.txt"), mnemonic);
+  console.log("Testnet details stored in testnet.json");
 }
 
 async function getUserDetails() {
@@ -73,7 +70,7 @@ async function getUserDetails() {
 }
 
 async function waitForLiveNode(node) {
-  const spinner = ora("Waiting for the node to be live").start();
+  const spinner = ora("Waiting for the Testnet to be live").start();
 
   const config = {
     method: "get",
@@ -95,12 +92,12 @@ async function waitForLiveNode(node) {
         await timeout(2000);
         await checkLoop();
       } else {
-        spinner.fail("Node has stopped");
+        spinner.fail("Testnet has stopped");
       }
 
       return null;
     } catch (err) {
-      if (err.response.data.error === "Node is started") {
+      if (err.response.data.error === "Testnet is started") {
         await timeout(2000);
         await checkLoop();
       } else console.log(err);

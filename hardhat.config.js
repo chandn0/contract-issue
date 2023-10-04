@@ -12,7 +12,7 @@ require("@nomicfoundation/hardhat-chai-matchers");
 let bbNode;
 try {
   bbNode = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "./nodes.json")).toString().trim()
+    fs.readFileSync(path.join(__dirname, "./testnet.json")).toString().trim()
   );
 } catch {}
 

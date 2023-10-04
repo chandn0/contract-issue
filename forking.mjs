@@ -2,12 +2,7 @@ import inquirer from "inquirer";
 import axios from "axios";
 import { ethers } from "ethers";
 import ora from "ora";
-import {
-  BB_BACKEND_URL,
-  BB_API_KEY,
-  networks,
-  networkData,
-} from "./constants.mjs";
+import { BASE_URL, BB_BACKEND_URL, BB_API_KEY } from "./constants.mjs";
 import { createNewDeployment } from "./helpers.mjs";
 
 async function getBlockNumber(rpc) {
@@ -61,7 +56,26 @@ async function createFork() {
   let chainId;
   let rpc;
 
-  const mnemonic = ethers.Wallet.createRandom().mnemonic.phrase;
+  const config1 = {
+    method: "get",
+    url: `${BB_BACKEND_URL}/user/chains`,
+    headers: {
+      Authorization: `Bearer ${BB_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+  };
+  const response = await axios(config1);
+  const networkData = {};
+
+  Object.values(response.data).forEach((entry) => {
+    if (entry.name !== "Gnosis") {
+      entry.options.forEach((option) => {
+        networkData[option.label] = [parseInt(option.value), option.networkRpc];
+      });
+    }
+  });
+
+  const networks = Object.keys(networkData);
 
   await inquirer
     .prompt([
@@ -97,35 +111,13 @@ async function createFork() {
   ).start();
 
   const data = JSON.stringify({
-    allowUnlimitedContractSize: false,
-    mining: { auto: true, interval: 0 },
-    accounts: {
-      mnemonic: mnemonic,
-    },
-    options: {
-      hardhat: {
-        mine: true,
-        stopImpersonatingAccount: true,
-        impersonateAccount: true,
-      },
-      evm: {
-        mine: true,
-        increaseTime: true,
-        setNextBlockTimestamp: true,
-        revert: true,
-        snapshot: true,
-      },
-      extra: { overrideGas: true },
-    },
-    forking: {
-      chainId,
-      blockNumber,
-    },
+    chainId,
+    blockNumber,
   });
 
   const config = {
     method: "post",
-    url: `${BB_BACKEND_URL}/user/container`,
+    url: `${BB_BACKEND_URL}/api/createfork`,
     headers: {
       Authorization: `Bearer ${BB_API_KEY}`,
       "Content-Type": "application/json",
@@ -138,19 +130,22 @@ async function createFork() {
   try {
     const response = await axios(config);
     const resData = response.data;
-
     if (response.status === 200) {
-      node = { nodeId: resData.nodeId, chainId: resData.chainId };
-      createNodeSpinner.succeed("Node created successfully");
-      console.log(node);
+      node = {
+        nodeId: resData.nodeId,
+        chainId: resData.forkingDetails.chainId,
+        explorer: `https://explorer.${BASE_URL}/${resData.nodeId}`,
+        faucet: `https://faucet.${BASE_URL}/${resData.nodeId}`,
+      };
+      createNodeSpinner.succeed("Testnet created successfully");
     } else {
-      console.log("Error in creating node, Error: ", resData);
+      console.log("Error in creating Testnet, Error: ", resData);
     }
   } catch (err) {
-    console.log("Error in creating node, Error: ", err);
+    console.log("Error in creating Testnet, Error: ", err);
   }
 
-  if (node) createNewDeployment(node, mnemonic, chainId);
+  if (node) createNewDeployment(node, chainId);
 }
 
 createFork();
