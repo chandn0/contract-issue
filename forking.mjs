@@ -133,7 +133,7 @@ async function createFork() {
     if (response.status === 200) {
       node = {
         nodeId: resData.nodeId,
-        chainId: resData.forkingDetails.chainId,
+        chainId: resData.chainId,
         explorer: `https://explorer.${BASE_URL}/${resData.nodeId}`,
         faucet: `https://faucet.${BASE_URL}/${resData.nodeId}`,
       };

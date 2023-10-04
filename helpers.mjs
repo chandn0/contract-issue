@@ -71,7 +71,6 @@ async function getUserDetails() {
 
 async function waitForLiveNode(node) {
   const spinner = ora("Waiting for the Testnet to be live").start();
-
   const config = {
     method: "get",
     url: `${BB_BACKEND_URL}/user/container/${node.nodeId}`,
@@ -85,19 +84,18 @@ async function waitForLiveNode(node) {
     try {
       const response = await axios(config);
       const data = response.data;
-
       if (data.status === "live") {
         spinner.succeed("Node is live");
       } else if (data.status === "started") {
         await timeout(2000);
         await checkLoop();
       } else {
-        spinner.fail("Testnet has stopped");
+        spinner.fail("Node has stopped");
       }
 
       return null;
     } catch (err) {
-      if (err.response.data.error === "Testnet is started") {
+      if (err.response.data.error === "Node is started") {
         await timeout(2000);
         await checkLoop();
       } else console.log(err);

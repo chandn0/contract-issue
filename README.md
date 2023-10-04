@@ -6,7 +6,7 @@
 
 ## Create your Private Testnet
 
-![image](./Your%20Private%20Testnet.png)
+![image](createTestnet.png)
 
 ## Use your personal Native & ERC20 Token Faucet
 
