@@ -2,7 +2,7 @@ import inquirer from "inquirer";
 import axios from "axios";
 import { ethers } from "ethers";
 import ora from "ora";
-import { BASE_URL, BB_BACKEND_URL, BB_API_KEY } from "./constants.mjs";
+import { BB_BACKEND_URL, BB_API_KEY } from "./constants.mjs";
 import { createNewDeployment } from "./helpers.mjs";
 
 async function getBlockNumber(rpc) {
@@ -117,7 +117,7 @@ async function createFork() {
 
   const config = {
     method: "post",
-    url: `${BB_BACKEND_URL}/api/createfork`,
+    url: `${BB_BACKEND_URL}/v1/buildbear-sandbox`,
     headers: {
       Authorization: `Bearer ${BB_API_KEY}`,
       "Content-Type": "application/json",
@@ -130,14 +130,17 @@ async function createFork() {
   try {
     const response = await axios(config);
     const resData = response.data;
-    if (response.status === 200) {
+    if (resData.status === "success") {
       node = {
-        nodeId: resData.nodeId,
+        testnetId: resData.sandboxId,
         chainId: resData.chainId,
-        explorer: `https://explorer.${BASE_URL}/${resData.nodeId}`,
-        faucet: `https://faucet.${BASE_URL}/${resData.nodeId}`,
+        rpcUrl: resData.rpcUrl,
+        faucetUrl: resData.faucetUrl,
+        explorerUrl: resData.explorerUrl,
+        verificationUrl: resData.verificationUrl,
       };
       createNodeSpinner.succeed("Testnet created successfully");
+      console.log(node);
     } else {
       console.log("Error in creating Testnet, Error: ", resData);
     }

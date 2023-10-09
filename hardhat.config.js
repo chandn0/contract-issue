@@ -4,25 +4,24 @@
 
 const fs = require("fs");
 const path = require("path");
-const BASE_URL = "dev.buildbear.io";
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
 require("@nomicfoundation/hardhat-chai-matchers");
 
-let bbNode;
+let BBTestnet;
 try {
-  bbNode = JSON.parse(
+  BBTestnet = JSON.parse(
     fs.readFileSync(path.join(__dirname, "./testnet.json")).toString().trim()
   );
 } catch {}
 
 module.exports = {
-  defaultNetwork: bbNode ? "buildbear" : "localhost",
+  defaultNetwork: BBTestnet ? "buildbear" : "localhost",
 
   networks: {
     hardhat: {},
     buildbear: {
-      url: bbNode.nodeId ? `https://rpc.${BASE_URL}/${bbNode.nodeId}` : "",
+      url: BBTestnet ? BBTestnet.testnetId : "",
     },
   },
   solidity: {
@@ -90,10 +89,10 @@ module.exports = {
     customChains: [
       {
         network: "buildbear",
-        chainId: bbNode ? bbNode.chainId : 0,
+        chainId: BBTestnet ? BBTestnet.chainId : 0,
         urls: {
-          apiURL: `https://rpc.${BASE_URL}/verify/etherscan/${bbNode.nodeId}`,
-          browserURL: `https://explorer.${BASE_URL}/${bbNode.nodeId}`,
+          apiURL: BBTestnet ? BBTestnet.verificationUrl : "",
+          browserURL: BBTestnet ? BBTestnet.explorerUrl : "",
         },
       },
     ],
