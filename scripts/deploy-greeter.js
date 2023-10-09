@@ -9,6 +9,10 @@ async function deploy() {
   const greeterInstance = await greeter.deploy();
   await greeterInstance.deployed();
   console.log("contract deployed at", greeterInstance.address);
+
+  await run(`verify:verify`, {
+    address: greeterInstance.address,
+  });
 }
 
 deploy()

@@ -58,7 +58,7 @@ async function createFork() {
 
   const config1 = {
     method: "get",
-    url: `${BB_BACKEND_URL}/user/chains`,
+    url: `${BB_BACKEND_URL}/chains`,
     headers: {
       Authorization: `Bearer ${BB_API_KEY}`,
       "Content-Type": "application/json",
@@ -66,13 +66,10 @@ async function createFork() {
   };
   const response = await axios(config1);
   const networkData = {};
-
   Object.values(response.data).forEach((entry) => {
-    if (entry.name !== "Gnosis") {
-      entry.options.forEach((option) => {
-        networkData[option.label] = [parseInt(option.value), option.networkRpc];
-      });
-    }
+    entry.options.forEach((option) => {
+      networkData[option.label] = [parseInt(option.value), option.networkRpc];
+    });
   });
 
   const networks = Object.keys(networkData);

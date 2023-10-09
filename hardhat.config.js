@@ -21,7 +21,7 @@ module.exports = {
   networks: {
     hardhat: {},
     buildbear: {
-      url: BBTestnet ? BBTestnet.testnetId : "",
+      url: BBTestnet ? BBTestnet.rpcUrl : "",
     },
   },
   solidity: {
