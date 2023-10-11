@@ -73,7 +73,7 @@ async function waitForLiveNode(node) {
   const spinner = ora("Waiting for the Testnet to be live").start();
   const config = {
     method: "get",
-    url: `${BB_BACKEND_URL}/user/container/${node.testnetId}`,
+    url: `${BB_BACKEND_URL}/v1/buildbear-sandbox/${node.testnetId}`,
     headers: {
       Authorization: `Bearer ${BB_API_KEY}`,
       "Content-Type": "application/json",
