@@ -24,6 +24,7 @@ export function readNodes() {
 
 export async function createNewDeployment(node, forkingChainId) {
   await getUserDetails();
+
   await waitForLiveNode(node);
 
   // eslint-disable-next-line no-param-reassign
@@ -58,8 +59,10 @@ async function getUserDetails() {
 
   var config = {
     method: "post",
+
     url: `${BB_BACKEND_URL}/api/scaffold-eth`,
     headers: {
+      Authorization: `Bearer ${BB_API_KEY}`,
       "Content-Type": "application/json",
     },
     data: data,
