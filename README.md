@@ -1,20 +1,4 @@
-# Hardhat x BuildBear
-
-**Hardhat x BuildBear** lets you create your own private testnet, (optional) forked from the mainnet, with your own Native and ERC20 Token faucet and blockchain Explorer.
-
-# 🐻 Features of Hardhat x [ BuildBear](https://buildbear.io)
-
-## Create your Private Testnet
-
-![image](createTestnet.png)
-
-## Use your personal Native & ERC20 Token Faucet
-
-![image](faucet.jpeg)
-
-## Use your personal Explorer with built-in Transaction Trace
-
-![image](explorer.jpeg)
+This Project has been created using [Hardhat x BuildBear](https://github.com/BuildBearLabs/Hardhat-BuildBear)
 
 # 🏄‍♂️ Quick Start
 
@@ -27,7 +11,7 @@ git clone link
 > 2️⃣ Install dependencies 
 
 ```bash
-cd Hardhat_x_BuildBear
+cd UniswapV3
 npm install
 ```
 
@@ -39,18 +23,11 @@ npm run createTestnet
 
 Once the Testnet is live, its RPC, Explorer and Faucet details are added to the `testnet.json` file
 
-> 4️⃣ To Deploy the `Greeter.sol` smart contract
+> 4️⃣ To Deploy the `Swap.sol` smart contract
 
 ```bash
-npx hardhat run scripts/deploy-greeter.js
+npx hardhat run scripts/deploy-Uniswap.js
 ```
-
-> 5️⃣ To Run the Test script `Greeter-Test.js`
-
-```bash
-npx hardhat test
-```
-
 
 
 # 🔭 Learning Resources 
