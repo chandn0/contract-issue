@@ -23,6 +23,12 @@ module.exports = {
     buildbear: {
       url: BBTestnet ? BBTestnet.rpcUrl : "",
     },
+    ss1: {
+      url: "https://1rpc.io/sepolia",
+      accounts: [
+        "334ff3bcd561d689be312f26ff720b987b60bbeb743d1e5ab3b3f426cda26f37",
+      ],
+    },
   },
   solidity: {
     compilers: [
@@ -82,6 +88,15 @@ module.exports = {
       },
       {
         version: "0.5.5",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      {
+        version: "0.8.20",
         settings: {
           optimizer: {
             enabled: true,
